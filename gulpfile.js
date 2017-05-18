@@ -25,11 +25,11 @@ gulp.task('clean', function () {
 gulp.task('jade', function(){
   return gulp.src(['./source/**/*.jade'])
     .pipe($.plumber())
-    .pipe($.data(function(file) {
-      var json = require('./source/data/data.json');
-      var data = Object.assign({}, json);
-      return data;
-    }))
+    // .pipe($.data(function(file) {
+    //   var json = require('./source/data/data.json');
+    //   var data = Object.assign({}, json);
+    //   return data;
+    // }))
     .pipe($.jade({ pretty: true }))
     .pipe(gulp.dest('./public'))
     .pipe(browserSync.reload({
@@ -87,8 +87,9 @@ gulp.task('sass', function(){
   return gulp.src(['./source/stylesheets/**/*.sass', './source/stylesheets/**/*.scss'])
     .pipe($.plumber())
     .pipe( $.sourcemaps.init())
-    .pipe($.sass({outputStyle: 'nested'})
-      .on('error', $.sass.logError))
+    .pipe($.sass({
+      outputStyle: 'nested'
+      }).on('error', $.sass.logError))
     .pipe($.postcss(processors))
     .pipe( $.if(options.env === 'production', $.minifyCss()) ) // 假設開發環境則壓縮 CSS
     .pipe($.sourcemaps.write('.'))
